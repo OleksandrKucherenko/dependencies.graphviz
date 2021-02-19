@@ -1,0 +1,22 @@
+{
+  "name": "dependencies.helper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.dependencies.js",
+  "scripts": {
+    "dot": "node ./index.dependencies.js --simplify --dot",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/n-readlines": "^1.0.1",
+    "@types/yargs": "^16.0.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "n-readlines": "^1.0.1",
+    "yargs": "^16.2.0"
+  }
+}
