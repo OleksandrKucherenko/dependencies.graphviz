@@ -1,17 +1,23 @@
 # Visualize Gradle Dependencies
 
 - [Visualize Gradle Dependencies](#visualize-gradle-dependencies)
+  - [Preview](#preview)
   - [Pre-requirements](#pre-requirements)
   - [Usage](#usage)
   - [Get Help](#get-help)
   - [Do analysis](#do-analysis)
+    - [Segmentation](#segmentation)
   - [Troubleshooting](#troubleshooting)
     - [My VsCode configuration](#my-vscode-configuration)
     - [Apply NodeJs automatically on project folder entrance](#apply-nodejs-automatically-on-project-folder-entrance)
 
-![Preview](_docs_/interactive-preview.png)
+## Preview
+
+![Preview](_docs_/interactive-dependency-analysis.gif)
 
 ## Pre-requirements
+
+Clone project. Than install all required tools:
 
 ```bash
 # requirements
@@ -25,7 +31,6 @@ nvm use --lts
 # Install DirEnv
 #
 curl -sfL https://direnv.net/install.sh | bash
-direnv allow
 #
 # Install Yarn
 #
@@ -35,6 +40,11 @@ yvm list-remote
 # Install GraphViz tool
 #
 brew install graphviz
+```
+
+[Configure direnv properly](#apply-nodejs-automatically-on-project-folder-entrance) and than install the project dependencies.
+
+```bash
 #
 # Install all required packages
 #
@@ -54,7 +64,7 @@ yarn
 ./index.dependencies.js dependencies.log --dot --simplify | tee jackson.dot
 
 # extract graph of Moshi dependency usage (com.squareup.moshi:moshi)
-./index.dependencies.js dependencies.log --dot --simplify --search com.squareup.moshi:moshi | tee moshi.dot
+./index.dependencies.js dependencies.log --dot --simplify --find com.squareup.moshi | tee moshi.dot
 
 # convert graph to image
 dot jackson.dot -Tpdf -o jackson.pdf
@@ -75,12 +85,13 @@ Usage: index.dependencies.js gradle_dependencies_log
 
 Options:
       --version   Show version number                                  [boolean]
-  -s, --search                                [default: "com.fasterxml.jackson"]
+  -f, --find                                  [default: "com.fasterxml.jackson"]
       --help      Show help                                            [boolean]
   -v, --verbose   Publish debug information                            [boolean]
   -d, --dot       Print GraphViz dot graph instead                     [boolean]
-  -i, --simplify  Remove version information from dependencies         [boolean]
-
+  -s, --simplify  Remove version information from dependencies         [boolean]
+  -l, --left      force graph building from left-to-right, instead of
+                  top-to-bottom                                        [boolean]
 ```
 
 ## Do analysis
@@ -96,7 +107,22 @@ Open VsCode and inside it open `.dot` file. `Cmd+Shift+A` type: `Graphviz` and s
 
 On graph node click you will see a selected path.
 
-![Preview](_docs_/interactive-preview.png)
+![Preview](_docs_/interactive-diagram.png)
+
+### Segmentation
+
+In several cases we may need extraction of a graph for the one gradle task only. Unfortinately 
+gradle do not give us this option, we can extract dependencies only by modules.
+
+With small tricks is possible to limit the scope:
+
+```bash
+# extract from full log lines: 211573-216480 and produce shorter log
+sed -n '211573,216480p' full-dependency.log >shorter-dependency.log
+
+# produce graph from shorter log
+./index.dependendencies.js shorter-dependency.log --simplify --dot >shorter.dot
+```
 
 ## Troubleshooting 
 

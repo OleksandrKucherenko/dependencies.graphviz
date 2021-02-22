@@ -117,3 +117,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# temporary/work files
+*.txt
+*.dot
+*.pdf
