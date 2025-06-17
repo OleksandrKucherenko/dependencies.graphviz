@@ -1,5 +1,7 @@
 # Visualize Gradle Dependencies
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OleksandrKucherenko/dependencies.graphviz)
+
 - [Visualize Gradle Dependencies](#visualize-gradle-dependencies)
   - [Preview](#preview)
   - [Pre-requirements](#pre-requirements)
